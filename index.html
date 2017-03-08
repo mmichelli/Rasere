@@ -99,12 +99,12 @@
 
      function glitchJpegBytes(strArr) {
        var rnd = Math.floor(jpgHeaderLength + Math.random() * (strArr.length - jpgHeaderLength - 4));
-       strArr[rnd] = strArr[rnd] + Math.round(Math.random() - Math.random());
+       strArr[rnd] =  Math.round(Math.random() * 255);
      }
 
      function restore() {
        for (var i = 0, l = imgDataArr.length; i < l; i++) {
-         if(Math.random() > 0.6)
+         if(Math.random() > 0.7)
            imgDataArr[i] =  imgBackup[i];
        }
      }
