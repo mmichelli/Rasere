@@ -100,13 +100,18 @@
      function glitchJpegBytes(strArr) {
        var rnd = Math.floor(jpgHeaderLength + Math.random() * (strArr.length - jpgHeaderLength - 4));
        strArr[rnd] =  Math.round(Math.random() * 255);
+       glitches.push(rnd); 
      }
 
      function restore() {
-       for (var i = 0, l = imgDataArr.length; i < l; i++) {
-         if(Math.random() > 0.7)
-           imgDataArr[i] =  imgBackup[i];
+       if(Math.random() > 0.1 ){
+         var glitch = glitches.pop()
+         imgDataArr[glitch] =  imgBackup[glitch];
+       } else if(Math.random() > 0.8){
+         var glitch = glitches.unshity()
+         imgDataArr[glitch] =  imgBackup[glitch];
        }
+
      }
 
 
@@ -115,17 +120,16 @@
        var img = new Image();
        img.onload = function() {
          ctx.drawImage(img, 0, 0);
-         setTimeout(glitchJpeg, 50);
-         count++;
-         if(count%40 === 0)
-           restore()
+         setTimeout(glitchJpeg, 300);
+         restore()
        }
        img.src = byteArrayToBase64(imgDataArr);
      }
      var initialImage = new Image();
      var imgDataArr;
      var imgBackup;
-     var count = 0; 
+   
+     var glitches = [];
 
      initialImage.onload = function() {
        ctx.drawImage(initialImage, 0, 0);
@@ -133,8 +137,7 @@
        imgDataArr = base64ToByteArray(imgData);
        detectJpegHeaderSize(imgDataArr);
        imgBackup = imgDataArr.slice();
-
-       glitchJpeg(); 
+       setTimeout(glitchJpeg, 1500);
 
      };
      initialImage.src = "./chair.jpg";
